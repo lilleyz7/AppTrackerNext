@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "apptrackfe": "file:",
     "autoprefixer": "^10.4.20",
     "daisyui": "^4.12.14",
     "next": "15.0.3",
