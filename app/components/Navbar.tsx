@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { redirect } from "next/navigation"
 
 export default function Navbar(){
@@ -20,11 +21,12 @@ export default function Navbar(){
     return (
         <div className="navbar bg-base-100">
   <div className="flex-1">
-    <a className="btn btn-ghost text-xl">My Applications</a>
+    <Link className="btn btn-ghost text-xl" href="/">My Applications</Link>
   </div>
   <div className="flex-none">
     <ul className="menu menu-horizontal px-1">
       <li><a href="/about">About</a></li>
+      <li><a href="/applications">Add Application</a></li>
       <li><button onClick={logout}>Logout</button></li>
     </ul>
   </div>

@@ -8,9 +8,12 @@ export default async function Home(){
                 redirect('/auth/login/')
         }
         return(
-                <>
+                
+                <div className="bg-gray-100">
         <Navbar />
+
         <h1>Home</h1>
-        </>
+                </div>
+        
 )
 }

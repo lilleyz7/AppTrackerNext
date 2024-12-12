@@ -24,7 +24,6 @@ export default function Activate(){
 
   return (
     <div>
-      <h1>Activate Account</h1>
       <button onClick={activateAccount}>Activate Account</button>
     </div>
   )
