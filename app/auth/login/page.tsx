@@ -1,19 +1,44 @@
+"use client"
+
+import { useRouter } from "next/navigation";
 import {  FormEvent, useState } from "react";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  
+  const router = useRouter();
+  
+  const goToRegister = () => {
+    router.push('./register');
+    return;
+  }
+  
+  const forgotPassword =  () => {
+    
+    router.push('./forgot-password');
+    return;
+  }
+  
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const url = process.env.BASE_API_URL + "auth/jwt/create"
+    const url = "/api/login/"
     const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
-    const data = await res.json();
-    console.log(data); // Save JWT to storage
+
+    if (res.ok) {
+      router.push('/')
+      return;
+    } else{
+      alert("Invalid credentials. Please try again.");
+      setEmail("");
+      setPassword("");
+    }
   };
 
   return (
@@ -52,6 +77,26 @@ export default function Login() {
               </button>
             </div>
           </form>
+          <div className="mt-4 text-center">
+            <p>
+              Not yet registered?{" "}
+              <button
+                onClick={goToRegister}
+                className="btn btn-link text-primary"
+              >
+                Register here
+              </button>
+            </p>
+            <p>
+              Forgot Password?{" "}
+              <button
+                onClick={forgotPassword}
+                className="btn btn-link text-primary"
+              >
+                Click Here
+              </button>
+            </p>
+          </div>
         </div>
       </div>
     </div>
