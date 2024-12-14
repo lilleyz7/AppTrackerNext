@@ -1,4 +1,4 @@
-import { Application } from "@/app/types/Application";
+import { ApplicationDTO } from "@/app/types/ApplicationDTO";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest){
         return NextResponse.json({"error": "no logged in authToken"}, {status: 400})
     }
 
-    const body: Application | undefined = await req.json()
+    const body: ApplicationDTO | undefined = await req.json()
     console.log(body)
     if (!body){
         return NextResponse.json({"error": "incorrect data given"}, {status: 400})

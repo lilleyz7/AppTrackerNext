@@ -2,12 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import { Application } from "../types/Application";
+import { ApplicationDTO } from "../../types/ApplicationDTO";
 
 export default function Add_application(){
     const router = useRouter()
 
-    const defaultData: Application = {
+    const defaultData: ApplicationDTO = {
         title: "",
         company: "",
         details: "",
@@ -15,7 +15,7 @@ export default function Add_application(){
         listing: "",
         status: ""
     }
-    const [formData, setFormData] = useState<Application>(defaultData);
+    const [formData, setFormData] = useState<ApplicationDTO>(defaultData);
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) {
         const { name, value } = e.currentTarget;
@@ -38,7 +38,7 @@ export default function Add_application(){
         const res = await fetch(url, options)
         if (res.ok){
             alert("Application Added Successfully")
-            router.push('/')
+            router.push('/applications/all')
         } else{
             const data = await res.json()
             console.log(data)

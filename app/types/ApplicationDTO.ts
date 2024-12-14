@@ -1,4 +1,4 @@
-export interface Application {
+export interface ApplicationDTO {
     title: string,
     company: string,
     details?: string,
