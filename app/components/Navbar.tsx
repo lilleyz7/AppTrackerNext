@@ -21,7 +21,7 @@ export default function Navbar(){
     return (
         <div className="navbar bg-base-100">
   <div className="flex-1">
-    <Link className="btn btn-ghost text-xl" href="/">My Applications</Link>
+    <Link className="btn btn-ghost text-xl" href="/applications/all">My Applications</Link>
   </div>
   <div className="flex-none">
     <ul className="menu menu-horizontal px-1">

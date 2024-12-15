@@ -6,5 +6,5 @@ export interface FullApplication {
     location: string,
     listing?: string, 
     status: string,
-    added: unknown,
+    added: string,
 }
