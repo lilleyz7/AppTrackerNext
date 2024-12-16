@@ -1,18 +1,19 @@
+import { FullApplication } from "@/app/types/FullApplication";
+import RefreshTokens from "@/app/utils/refreshToken";
 import { NextApiRequest } from "next";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 const urlExtension = "/api/get_single_app/"
 
-export async function GET(req: NextApiRequest, { params }: { params: Promise<{ id: string }>}){
-    const authToken = (await cookies()).get("access")?.value
-        console.log(authToken)
-        if(!authToken){
-            return NextResponse.json({"error": "no logged in authToken"}, {status: 400})
-        }
-    const id = (await params).id
-    console.log(id)
+async function getTokens(){
+    const access = (await cookies()).get("access")?.value
+    const refresh = (await cookies()).get("refresh")?.value
+    const tokens = [access, refresh]
+    return tokens
+}
 
+async function getApplication(id: string, authToken: string): Promise<[FullApplication?,Error?]>{
     const url = "http://127.0.0.1:8000" + urlExtension + id
     const options = {
         method: "GET",
@@ -24,13 +25,45 @@ export async function GET(req: NextApiRequest, { params }: { params: Promise<{ i
 
     try{
         const res = await fetch(url, options)
-        const data = await res.json()
+        const data: FullApplication = await res.json()
         if (!res.ok){
-            return NextResponse.json({"error": data}, {status: res.status})
+            return [data, undefined]
         }
         console.log(data)
-        return NextResponse.json({"app": data}, {status: 200})
+        return [data, undefined]
     } catch(error){
-        return NextResponse.json({"error": error}, {status: 400})
+        return [undefined, new Error("" + error)]
+    }
+}
+export async function GET(req: NextApiRequest, { params }: { params: Promise<{ id: string }>}){
+    const tokens = await getTokens()
+    const authToken = tokens[0]
+    const refreshToken = tokens[1] 
+
+    const id = (await params).id
+
+    if (authToken){
+        const application = await getApplication(id, authToken)
+        if(application[0]){
+            return NextResponse.json({"app": application[0]}, {status: 200})
+        }
+        return NextResponse.json({"error": application})
+    }
+
+    else if (refreshToken){
+        const success = await RefreshTokens()
+        if (success){
+            const tokens = await getTokens()
+            const authToken = tokens[0]
+
+            const id = (await params).id
+            if (authToken){
+                const application = await getApplication(id, authToken)
+                if(application[0]){
+                    return NextResponse.json({"app": application[0]}, {status: 200})
+                }
+                return NextResponse.json({"error": application})
+            }
+        }
     }
 }

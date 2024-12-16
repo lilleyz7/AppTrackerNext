@@ -20,8 +20,12 @@ export default function ApplicationDetails(){
             try{
                 const res = await fetch(url, options)
                 const data = await res.json()
-                console.log(data.app)
-                setApp(data.app)
+                if (res.ok){
+
+                  setApp(data.app)
+                } else{
+                  return redirect('/auth/login')
+                }
             } catch(e){
                 alert(e)
             }
